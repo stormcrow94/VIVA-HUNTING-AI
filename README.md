@@ -66,4 +66,4 @@ Abra `http://localhost:8000/login` (credenciais padrão `admin` / `admin123`) e 
 
 ---
 
-**Pronto!** Consulte o [`wiki.md`](wiki.md) para qualquer detalhe aprofundado e mantenha o repositório limpo apenas com estes dois documentos principais.
+Consulte o [`wiki.md`](wiki.md) para qualquer detalhe aprofundado e mantenha o repositório limpo apenas com estes dois documentos principais.

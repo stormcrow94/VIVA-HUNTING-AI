@@ -309,9 +309,6 @@ grep ERROR logs/app.log
 
 ## 19. Migração Gemini → OpenAI e histórico de versões
 
-- **Motivação**:
-  - GPT-4o-mini custa $0.15/$0.60 por 1M tokens (input/output), latência ~1–2s e janela de 128K tokens (4x maior que o Gemini Pro).
-  - Documentação, suporte e tooling superiores, com function calling robusto.
 - **Passos principais**:
   1. Adicionar `openai>=1.12.0` e remover `google-generativeai`.
   2. Criar `openai_handler.py` (function calling + memória).
@@ -321,9 +318,6 @@ grep ERROR logs/app.log
   - v2.0.0 (16/11/2025) – migração para OpenAI, custos transparentes, health check ampliado e depreciação do handler Gemini.
   - v1.0.0 – release inicial (Gemini, arquitetura base, autenticação JWT, multi-ADOM).
   - Planejamento para v2.1.0 inclui dashboards, exportações e cache.
-- **Snippet “About” sugerido para GitHub**:
-  > 🤖 Chatbot inteligente para FortiAnalyzer usando OpenAI. Consulte logs, eventos e políticas em linguagem natural. Suporta Application Control, Webfilter, análise de tráfego, multi-ADOM, interface moderna e autenticação JWT.
-  - Tags recomendadas: `fortianalyzer`, `chatbot`, `openai`, `security-automation`, `threat-hunting`, `fastapi`, `python`, `siem`, `jwt-authentication`.
 - **Custos estimados**: ~US$6/mês para 1k consultas/dia (500 tokens input + 200 tokens output por interação).
 
 ---

@@ -1,0 +1,119 @@
+name: Sync Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'wiki.md'
+      - 'README.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout wiki repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync wiki content
+        run: |
+          # Copy main wiki file
+          cp wiki.md wiki/Home.md
+          
+          # Copy README as a separate page
+          cp README.md wiki/Quick-Start.md
+          
+          # Create index page with navigation
+          cat > wiki/_Sidebar.md << 'EOF'
+          ## 📚 Navegação
+
+          ### 🏠 Início
+          - **[Home](Home)** - Wiki técnica completa
+          - **[Quick Start](Quick-Start)** - Guia rápido
+
+          ### 🎯 Principais Seções
+          - [Arquitetura](Home#2-arquitetura)
+          - [Setup](Home#4-setup-detalhado)
+          - [Autenticação](Home#6-autenticação-e-controle-de-acesso)
+          - [IA & OpenAI](Home#7-orquestração-ia-openai)
+          - [FortiAnalyzer](Home#8-conector-fortianalyzer)
+          
+          ### 🔧 Operação
+          - [Funcionalidades](Home#9-catálogo-de-funcionalidades)
+          - [Testes](Home#10-testes-e-validação)
+          - [Troubleshooting](Home#11-operação--troubleshooting)
+          - [Segurança](Home#12-segurança-e-hardening)
+
+          ### 📖 Recursos Avançados
+          - [Seleção de ADOM](Home#15-seleção-de-adom-ponta-a-ponta)
+          - [Memória Contextual](Home#16-memória-de-conversação-e-follow-ups)
+          - [Gestão de Usuários](Home#17-gestão-de-usuários-e-painel-administrativo)
+          - [Interface & UX](Home#18-interface-web-e-ux)
+          - [Migração OpenAI](Home#19-migração-gemini--openai-e-histórico-de-versões)
+
+          ### 🚀 Roadmap
+          - [Próximos Passos](Home#13-roadmap-sugerido)
+          - [Compatibilidade 7.4.8](Home#21-compatibilidade-com-fortianalyzer-748)
+
+          ---
+
+          **Versão**: 2.1.0  
+          **Desenvolvido por**: stormcrow94  
+          **Última atualização**: $(date +%Y-%m-%d)
+          EOF
+
+          # Create footer with version info
+          cat > wiki/_Footer.md << 'EOF'
+          ---
+          
+          📌 **VIVA-HUNTING-AI** | Chatbot inteligente para FortiAnalyzer  
+          🔗 [Repositório](https://github.com/${{ github.repository }}) | ⭐ Desenvolvido com ❤️ por stormcrow94
+          EOF
+
+      - name: Commit and push to wiki
+        working-directory: wiki
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          git add .
+          
+          # Check if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          
+          git commit -m "🤖 Auto-sync from main repository wiki.md
+
+          Synced from commit: ${{ github.sha }}
+          Triggered by: ${{ github.actor }}
+          Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          
+          git push origin master
+
+      - name: Summary
+        run: |
+          echo "✅ Wiki sincronizada com sucesso!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📝 **Arquivos sincronizados:**" >> $GITHUB_STEP_SUMMARY
+          echo "- \`wiki.md\` → \`Home.md\` (página principal)" >> $GITHUB_STEP_SUMMARY
+          echo "- \`README.md\` → \`Quick-Start.md\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Sidebar e Footer atualizados" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **Acesse a wiki:** https://github.com/${{ github.repository }}/wiki" >> $GITHUB_STEP_SUMMARY
+

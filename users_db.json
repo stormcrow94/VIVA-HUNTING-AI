@@ -1,0 +1,33 @@
+{
+  "admin": {
+    "username": "admin",
+    "full_name": "Administrator",
+    "email": "admin@example.com",
+    "hashed_password": "$2b$12$v6PEfvOV8keyaaHrlajHCO8gTtBy.spabZK1SkgGD9XmsgBCcXa8G",
+    "disabled": false,
+    "roles": [
+      "admin",
+      "analyst"
+    ],
+    "allowed_adoms": [
+      "*"
+    ],
+    "created_at": "2025-10-08T00:00:00",
+    "last_login": "2025-11-17T02:56:29.003024"
+  },
+  "analyst": {
+    "username": "analyst",
+    "full_name": "Security Analyst",
+    "email": "analyst@example.com",
+    "hashed_password": "$2b$12$v6PEfvOV8keyaaHrlajHCO8gTtBy.spabZK1SkgGD9XmsgBCcXa8G",
+    "disabled": false,
+    "roles": [
+      "analyst"
+    ],
+    "allowed_adoms": [
+      "*"
+    ],
+    "created_at": "2025-10-08T00:00:00",
+    "last_login": null
+  }
+}
